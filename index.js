@@ -9,13 +9,19 @@ const db = new pg.Client({
   user: "postgres",
   host: "localhost",
   database: "world",
-  password: "123456",
+  password: "12345",
   port: 5432,
 });
 db.connect();
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.use(express.static("public", {
+  setHeaders: (res, path) =>{
+      if(path.endsWith(".css")){
+          res.set("Content-Type", "text/css")
+      }
+  }
+}))
 
 let currentUserId = 1;
 
